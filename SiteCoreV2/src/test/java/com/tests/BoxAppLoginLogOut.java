@@ -13,7 +13,6 @@ import org.testng.annotations.Test;
 
 import com.pages.BoxAppHomePage;
 import com.pages.BoxAppLoginPage;
-import com.pages.PageTemplate;
 import com.utils.Constants;
 import com.utils.Print;
 import com.utils.ResponseFromPage;
@@ -23,7 +22,7 @@ public class BoxAppLoginLogOut extends Print {
 	 BoxAppLoginPage boxAppLoginPage;
 	 ResponseFromPage responseFromPage;
 	 BoxAppHomePage boxAppHomePage;
-	 PageTemplate pageTemplate;
+	 //PageTemplate pageTemplate;
 	 public String log="";
 
 	 	
@@ -35,7 +34,7 @@ public class BoxAppLoginLogOut extends Print {
 		super.driver = driver;
 		boxAppLoginPage = new BoxAppLoginPage(driver);
 		boxAppHomePage = new BoxAppHomePage(driver);
-		pageTemplate = new PageTemplate(driver);
+		//pageTemplate = new PageTemplate(driver);
 	}
 	@BeforeMethod
 	public void refreshLog() {
@@ -43,30 +42,30 @@ public class BoxAppLoginLogOut extends Print {
 	}
 	@Test(priority = 1)
 	public void navigateToBoxLogin()throws Throwable {
-		responseFromPage=pageTemplate.navigateToApps(Constants.BOX_APP_URL);
+		responseFromPage=boxAppLoginPage.navigateToApps(Constants.BOX_APP_URL);
 		log();
 		}
 
 	@Parameters({"emailAddress","password"})
 	@Test(priority = 2)
 	public void login(String emailAddress, String password)throws Throwable {
-		responseFromPage=pageTemplate.verifyTitle("Box | Login");
+		responseFromPage=boxAppLoginPage.verifyTitle("Box | Login");
 		log();
-		responseFromPage=pageTemplate.enterDetails(emailAddress,"Email Id",boxAppLoginPage.getByWithKey("Email Id"));
+		responseFromPage=boxAppLoginPage.enterDetails(emailAddress,"Email Id",boxAppLoginPage.getByWithKey("Email Id"));
 		log();
-		responseFromPage=pageTemplate.clickButton("Next",boxAppLoginPage.getByWithKey("Next"));
+		responseFromPage=boxAppLoginPage.clickButton("Next",boxAppLoginPage.getByWithKey("Next"));
 		log();
-		responseFromPage=pageTemplate.enterDetails(password,"Password",boxAppLoginPage.getByWithKey("Password"));
+		responseFromPage=boxAppLoginPage.enterDetails(password,"Password",boxAppLoginPage.getByWithKey("Password"));
 		log();
-		responseFromPage=pageTemplate.clickButton("Login",boxAppLoginPage.getByWithKey("Login"));
+		responseFromPage=boxAppLoginPage.clickButton("Login",boxAppLoginPage.getByWithKey("Login"));
 		log();
 		}
 	@Test(priority = 3)
 	public void logOut()throws Throwable {
-		responseFromPage=pageTemplate.clickButton("Profile",boxAppHomePage.getByWithKey("Profile"));
+		responseFromPage=boxAppHomePage.clickButton("Profile",boxAppHomePage.getByWithKey("Profile"));
 		log();
 		Thread.sleep(1000);
-		responseFromPage=pageTemplate.clickButton("LogOut",boxAppHomePage.getByWithKey("LogOut"));
+		responseFromPage=boxAppHomePage.clickButton("LogOut",boxAppHomePage.getByWithKey("LogOut"));
 		log();
 		Thread.sleep(1000);
 		}

@@ -75,35 +75,37 @@ public class TestListenerD  implements ITestListener,ISuiteListener,IClassListen
 		System.out.println("hey is it possible "+result.getParameters()[0]);
 		totalTestCount++;
 	}
+	@SuppressWarnings("unchecked")
 	public void onTestSuccess(ITestResult result) {
-		String[] message = new String[]{};
-		int thread = Integer.parseInt(result.getParameters()[0].toString())-1;
+		HashMap<Integer,String> message = new HashMap<>();
+		Integer thread = Integer.parseInt(result.getParameters()[0].toString())-1;
 		System.out.println("Name of the test method successfully excuted " + result.getName());
 		ExtentTest methodNode;
 		String methodName= result.getName();
 		String testClassName= result.getTestContext().getName()+result.getTestClass().getRealClass().getSimpleName();
 		methodNode= classMap.get(testClassName).createNode(methodName);
 		try {
-			message = (String[]) result.getTestClass().getRealClass().getDeclaredField("logs")
+			message = (HashMap<Integer,String>) result.getTestClass().getRealClass().getDeclaredField("logs")
 					.get(result.getInstance());
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		reports.addTestRunnerOutput(message[thread]);
-		methodNode.log(Status.PASS, message[thread]);
-		System.out.println("From listener "+message[thread]);
+		reports.addTestRunnerOutput(message.get(thread));
+		methodNode.log(Status.PASS, message.get(thread));
+		System.out.println("From listener "+message.get(thread));
 		passedTestCount++;
 	}
+	@SuppressWarnings("unchecked")
 	public void onTestFailure(ITestResult result) {
-		WebDriver[] driver = new WebDriver[]{};
-		String[] message = new String[]{};
-		int thread = Integer.parseInt(result.getParameters()[0].toString())-1;
+		HashMap<Integer,WebDriver> driver = new HashMap<>();
+		HashMap<Integer,String> message = new HashMap<>();
+		Integer thread = Integer.parseInt(result.getParameters()[0].toString())-1;
 		ExtentTest methodNode;
 		String methodName= result.getName();
 		String testClassName= result.getTestContext().getName()+result.getTestClass().getRealClass().getSimpleName();
 		methodNode= classMap.get(testClassName).createNode(methodName);
 		try {
-			driver = (WebDriver[]) result.getTestClass().getRealClass().getDeclaredField("drivers")
+			driver = (HashMap<Integer,WebDriver>) result.getTestClass().getRealClass().getDeclaredField("drivers")
 					.get(result.getInstance());
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -111,8 +113,8 @@ public class TestListenerD  implements ITestListener,ISuiteListener,IClassListen
 		System.out.println("Name of test method failed:" + result.getName());
 		Date date = new Date();
 		String timeStamp = date.toString().replace(":", "_").replace(" ", "_");
-		String name = result.getTestContext().getName() + "_"+result.getName() +"_"+ timeStamp;
-		File srcFile = ((TakesScreenshot) driver[thread]).getScreenshotAs(OutputType.FILE);
+		String name = result.getTestContext().getName() + "_"+result.getName() +"_"+(thread+1)+"_"+ timeStamp;
+		File srcFile = ((TakesScreenshot) driver.get(thread)).getScreenshotAs(OutputType.FILE);
 		String destPath = System.getProperty("user.dir") + "/FailedTestsScreenshots/" + name + ".png";
 		File destFile = new File(destPath);
 		try {
@@ -121,31 +123,32 @@ public class TestListenerD  implements ITestListener,ISuiteListener,IClassListen
 			System.out.println(e.getMessage());
 		}
 		try {
-			message = (String[]) result.getTestClass().getRealClass().getDeclaredField("logs")
+			message = (HashMap<Integer,String>) result.getTestClass().getRealClass().getDeclaredField("logs")
 					.get(result.getInstance());
 		} catch (Exception e){
 		System.out.println(e.getMessage());
 		}
-		reports.addTestRunnerOutput(message[thread]+"</br>"+result.getThrowable());
-		methodNode.log(Status.FAIL, message[thread]+"</br>"+result.getThrowable(),MediaEntityBuilder.createScreenCaptureFromPath(destPath, name).build());
+		reports.addTestRunnerOutput(message.get(thread)+"</br>"+result.getThrowable());
+		methodNode.log(Status.FAIL, message.get(thread)+"</br>"+result.getThrowable(),MediaEntityBuilder.createScreenCaptureFromPath(destPath, name).build());
 		failedTestCount++;
 	}
+	@SuppressWarnings("unchecked")
 	public void onTestSkipped(ITestResult result) {
-		String[] message = new String[]{};
-		int thread = Integer.parseInt(result.getParameters()[0].toString())-1;
+		HashMap<Integer,String> message = new HashMap<>();
+		Integer thread = Integer.parseInt(result.getParameters()[0].toString())-1;
 		System.out.println("Name of test method skipped " + result.getName());
 		ExtentTest methodNode;
 		String methodName= result.getName();
 		String testClassName= result.getTestContext().getName()+result.getTestClass().getRealClass().getSimpleName();
 		methodNode= classMap.get(testClassName).createNode(methodName);		
 		try {
-			message = (String[]) result.getTestClass().getRealClass().getDeclaredField("log")
+			message = (HashMap<Integer,String>) result.getTestClass().getRealClass().getDeclaredField("logs")
 					.get(result.getInstance());
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		reports.addTestRunnerOutput(message[thread]);
-		methodNode.log(Status.SKIP, message[thread]);
+		reports.addTestRunnerOutput(message.get(thread));
+		methodNode.log(Status.SKIP, message.get(thread));
 		skippedTestCount++;
 	}
 	public void onTestFailedButWithinSuccessPercentage(ITestResult result) {

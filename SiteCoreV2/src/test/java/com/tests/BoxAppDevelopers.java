@@ -15,7 +15,6 @@ import org.testng.annotations.Test;
 import com.pages.BoxAppDevelopersPage;
 import com.pages.BoxAppHomePage;
 import com.pages.BoxAppLoginPage;
-import com.pages.PageTemplate;
 import com.utils.Constants;
 import com.utils.Print;
 import com.utils.ResponseFromPage;
@@ -25,7 +24,7 @@ public class BoxAppDevelopers extends Print {
 	 BoxAppLoginPage boxAppLoginPage;
 	 BoxAppDevelopersPage boxAppDevelopersPage;
 	 BoxAppHomePage boxAppHomePage;
-	 PageTemplate pageTemplate;
+	 //PageTemplate pageTemplate;
 	 ResponseFromPage responseFromPage;
 	 boolean isDeveloperTokenAvailable;
 	 public String log="";
@@ -40,7 +39,7 @@ public class BoxAppDevelopers extends Print {
 		boxAppLoginPage = new BoxAppLoginPage(driver);
 		boxAppDevelopersPage = new BoxAppDevelopersPage(driver);
 		boxAppHomePage = new BoxAppHomePage(driver);
-		pageTemplate = new PageTemplate(driver);
+		//pageTemplate = new PageTemplate(driver);
 		isDeveloperTokenAvailable=false;
 		}
 	@BeforeMethod
@@ -50,37 +49,37 @@ public class BoxAppDevelopers extends Print {
 
 	@Test(priority = 1)
 	public void navigateToBox()throws Throwable {
-		responseFromPage=pageTemplate.navigateToApps(Constants.BOX_APP_URL);
+		responseFromPage=boxAppLoginPage.navigateToApps(Constants.BOX_APP_URL);
 		log();
 		}
 	@Parameters({"emailAddress","password"})
 	@Test(priority = 2)
 	public void login(String emailAddress, String password)throws Throwable {
-		responseFromPage=pageTemplate.verifyTitle("Box | Login");
+		responseFromPage=boxAppLoginPage.verifyTitle("Box | Login");
 		log();
-		responseFromPage=pageTemplate.enterDetails(emailAddress,"Email Id",boxAppLoginPage.getByWithKey("Email Id"));
+		responseFromPage=boxAppLoginPage.enterDetails(emailAddress,"Email Id",boxAppLoginPage.getByWithKey("Email Id"));
 		log();
-		responseFromPage=pageTemplate.clickButton("Next",boxAppLoginPage.getByWithKey("Next"));
+		responseFromPage=boxAppLoginPage.clickButton("Next",boxAppLoginPage.getByWithKey("Next"));
 		log();
-		responseFromPage=pageTemplate.enterDetails(password,"Password",boxAppLoginPage.getByWithKey("Password"));
+		responseFromPage=boxAppLoginPage.enterDetails(password,"Password",boxAppLoginPage.getByWithKey("Password"));
 		log();
-		responseFromPage=pageTemplate.clickButton("Login",boxAppLoginPage.getByWithKey("Login"));
+		responseFromPage=boxAppLoginPage.clickButton("Login",boxAppLoginPage.getByWithKey("Login"));
 		log();
 		}
 	
 	@Test(priority = 3)
 	public void clickDevConsoleButton()throws Throwable {
-		responseFromPage=pageTemplate.verifyTitle("All Files | Powered by Box");
+		responseFromPage=boxAppHomePage.verifyTitle("All Files | Powered by Box");
 		log();
-		responseFromPage=pageTemplate.clickButton("Dev Console",boxAppHomePage.getByWithKey("Dev Console"));
+		responseFromPage=boxAppHomePage.clickButton("Dev Console",boxAppHomePage.getByWithKey("Dev Console"));
 		log();
-		responseFromPage=pageTemplate.verifyTitleOfActiveWindow("Box Developers");
+		responseFromPage=boxAppHomePage.verifyTitleOfActiveWindow("Box Developers");
 		log();
-		responseFromPage=pageTemplate.clickButton("App",boxAppDevelopersPage.getByWithKey("App"));
+		responseFromPage=boxAppHomePage.clickButton("App",boxAppDevelopersPage.getByWithKey("App"));
 		log();
-		responseFromPage=pageTemplate.verifyTitle("FirstBoxDevApp | Box Developers");
+		responseFromPage=boxAppDevelopersPage.verifyTitle("FirstBoxDevApp | Box Developers");
 		log();
-		responseFromPage=pageTemplate.clickButton("Configuration",boxAppDevelopersPage.getByWithKey("Configuration"));
+		responseFromPage=boxAppDevelopersPage.clickButton("Configuration",boxAppDevelopersPage.getByWithKey("Configuration"));
 		log();
 		}
 	@Test(priority = 4)
@@ -93,7 +92,7 @@ public class BoxAppDevelopers extends Print {
 	@Test(priority = 5)
 	public void clickGenerateDeveloperTokenButton()throws Throwable {
 		if(isDeveloperTokenAvailable==false) {
-			responseFromPage=pageTemplate.clickButton("Generate Developer Token",boxAppDevelopersPage.getByWithKey("Generate Developer Token"));
+			responseFromPage=boxAppDevelopersPage.clickButton("Generate Developer Token",boxAppDevelopersPage.getByWithKey("Generate Developer Token"));
 			Thread.sleep(2000);
 			log();
 		}
@@ -108,16 +107,16 @@ public class BoxAppDevelopers extends Print {
 		log();
 		log = logExtent(log,"developer token is "+responseFromPage.getExtentMessage());
 		Thread.sleep(1000);
-		responseFromPage=pageTemplate.verifyTitleOfOriginalWindow("All Files | Powered by Box");
+		responseFromPage=boxAppHomePage.verifyTitleOfOriginalWindow("All Files | Powered by Box");
 		log();
 		Thread.sleep(1000);
 		}
 	@Test(priority = 7)
 	public void logOut()throws Throwable {
-		responseFromPage=pageTemplate.clickButton("Profile",boxAppHomePage.getByWithKey("Profile"));
+		responseFromPage=boxAppHomePage.clickButton("Profile",boxAppHomePage.getByWithKey("Profile"));
 		log();
 		Thread.sleep(1000);
-		responseFromPage=pageTemplate.clickButton("LogOut",boxAppHomePage.getByWithKey("LogOut"));
+		responseFromPage=boxAppHomePage.clickButton("LogOut",boxAppHomePage.getByWithKey("LogOut"));
 		log();
 		Thread.sleep(1000);
 		}

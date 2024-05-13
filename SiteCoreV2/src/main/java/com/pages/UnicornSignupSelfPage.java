@@ -4,9 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
-import com.controls.SeleniumControls;
-
-public class UnicornSignupSelfPage extends SeleniumControls {
+public class UnicornSignupSelfPage extends PageTemplate {
 	 WebDriver driver;
 	 By byFirstName = By.xpath("//input[@id='firstName']");
 	 By byLastName = By.xpath("//input[@id='lastName']");

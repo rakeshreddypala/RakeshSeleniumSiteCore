@@ -20,19 +20,18 @@ public class GlobalDriver {
 		switch(selectedBrowser) {
 		case "chrome":
 			driver = new ChromeDriver();
-			driver.manage().window().maximize();
 			break;
 		case "edge":
 			driver = new EdgeDriver();
-			driver.manage().window().maximize();
 			break;
 		case "firefox":
 			driver = new FirefoxDriver();
-			driver.manage().window().maximize();
 			break;	
 		}
+		driver.manage().window().maximize();
+		driver.manage().deleteAllCookies();
 	}
-	public static GlobalDriver getGlobalDriver() {
+	public synchronized static GlobalDriver getGlobalDriver() {
 		return globalDriver;
 	}
 	public static void setGlobalDriver(String selectedBrowser) {
@@ -41,7 +40,7 @@ public class GlobalDriver {
 	public  WebDriver getDriver() {
 		return driver;
 	}
-	public static void selectBrowser(String browserFromFeature,String parallelMode,String xmlTestName)  {
+	public synchronized static void selectBrowser(String browserFromFeature,String parallelMode,String xmlTestName)  {
 		boolean isPresent = false;
 		if (parallelMode.equals("tests")) {
 			for (LimitBrowser l:limitBrowserSet) {

@@ -72,7 +72,6 @@ public class TestListener  implements ITestListener,ISuiteListener,IClassListene
         }
 	}
 	public void onTestStart(ITestResult result) {
-		System.out.println("hey is it possible "+result.getParameters()[0]);
 		totalTestCount++;
 	}
 	public void onTestSuccess(ITestResult result) {

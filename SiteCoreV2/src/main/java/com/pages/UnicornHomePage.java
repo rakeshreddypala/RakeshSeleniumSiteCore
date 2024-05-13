@@ -4,9 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
-import com.controls.SeleniumControls;
-
-public class UnicornHomePage extends SeleniumControls {
+public class UnicornHomePage extends PageTemplate {
 	 WebDriver driver;
 	 By bySignup = By.xpath("//button[text()=' SIGN UP NOW']");	 
 	public UnicornHomePage(WebDriver driver) {

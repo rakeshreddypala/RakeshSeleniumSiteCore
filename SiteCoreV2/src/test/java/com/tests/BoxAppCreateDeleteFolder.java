@@ -14,7 +14,6 @@ import org.testng.annotations.Test;
 
 import com.pages.BoxAppHomePage;
 import com.pages.BoxAppLoginPage;
-import com.pages.PageTemplate;
 import com.utils.Constants;
 import com.utils.Print;
 import com.utils.ResponseFromPage;
@@ -23,7 +22,7 @@ public class BoxAppCreateDeleteFolder extends Print {
 	 public WebDriver driver;
 	 BoxAppLoginPage boxAppLoginPage;
 	 BoxAppHomePage boxAppHomePage;
-	 PageTemplate pageTemplate;
+	 //PageTemplate pageTemplate;
 	 ResponseFromPage responseFromPage;
 	 public String log="";
 	 
@@ -35,7 +34,7 @@ public class BoxAppCreateDeleteFolder extends Print {
 		super.driver = driver;
 		boxAppLoginPage = new BoxAppLoginPage(driver);
 		boxAppHomePage = new BoxAppHomePage(driver);
-		pageTemplate = new PageTemplate(driver);
+		//pageTemplate = new PageTemplate(driver);
 		}
 	@BeforeMethod
 	public void refreshLog() {
@@ -43,34 +42,34 @@ public class BoxAppCreateDeleteFolder extends Print {
 	}
 	@Test(priority = 1)
 	public void navigateToBox()throws Throwable {
-		responseFromPage=pageTemplate.navigateToApps(Constants.BOX_APP_URL);
+		responseFromPage=boxAppLoginPage.navigateToApps(Constants.BOX_APP_URL);
 		log();
 		}
 	@Parameters({"emailAddress","password"})
 	@Test(priority = 2)
 	public void loginCreate(String emailAddress, String password)throws Throwable {		
-		responseFromPage=pageTemplate.verifyTitle("Box | Login");
+		responseFromPage=boxAppLoginPage.verifyTitle("Box | Login");
 		log();
-		responseFromPage=pageTemplate.enterDetails(emailAddress,"Email Id",boxAppLoginPage.getByWithKey("Email Id"));
+		responseFromPage=boxAppLoginPage.enterDetails(emailAddress,"Email Id",boxAppLoginPage.getByWithKey("Email Id"));
 		log();
-		responseFromPage=pageTemplate.clickButton("Next",boxAppLoginPage.getByWithKey("Next"));
+		responseFromPage=boxAppLoginPage.clickButton("Next",boxAppLoginPage.getByWithKey("Next"));
 		log();
-		responseFromPage=pageTemplate.enterDetails(password,"Password",boxAppLoginPage.getByWithKey("Password"));
+		responseFromPage=boxAppLoginPage.enterDetails(password,"Password",boxAppLoginPage.getByWithKey("Password"));
 		log();
-		responseFromPage=pageTemplate.clickButton("Login",boxAppLoginPage.getByWithKey("Login"));
+		responseFromPage=boxAppLoginPage.clickButton("Login",boxAppLoginPage.getByWithKey("Login"));
 		log();
 		}
 	@Test(priority = 3)
 	public void createFolder()throws Throwable {
-		responseFromPage=pageTemplate.verifyTitle("All Files | Powered by Box");
+		responseFromPage=boxAppHomePage.verifyTitle("All Files | Powered by Box");
 		log();
-		responseFromPage=pageTemplate.clickButton("New",boxAppHomePage.getByWithKey("New"));
+		responseFromPage=boxAppHomePage.clickButton("New",boxAppHomePage.getByWithKey("New"));
 		log();
-		responseFromPage=pageTemplate.clickButton("Create Folder",boxAppHomePage.getByWithKey("Create Folder"));
+		responseFromPage=boxAppHomePage.clickButton("Create Folder",boxAppHomePage.getByWithKey("Create Folder"));
 		log();
-		responseFromPage=pageTemplate.enterDetails(uniqueName(),"Folder Name",boxAppHomePage.getByWithKey("Folder Name"));
+		responseFromPage=boxAppHomePage.enterDetails(uniqueName(),"Folder Name",boxAppHomePage.getByWithKey("Folder Name"));
 		log();
-		responseFromPage=pageTemplate.clickButton("Create",boxAppHomePage.getByWithKey("Create"));
+		responseFromPage=boxAppHomePage.clickButton("Create",boxAppHomePage.getByWithKey("Create"));
 		log();
 		responseFromPage=boxAppHomePage.isInvisible("Success message");
 		log();
@@ -79,25 +78,25 @@ public class BoxAppCreateDeleteFolder extends Print {
 		}
 	@Test(priority = 4)
 	public void logOutCreate()throws Throwable {
-		responseFromPage=pageTemplate.clickButton("Profile",boxAppHomePage.getByWithKey("Profile"));
+		responseFromPage=boxAppHomePage.clickButton("Profile",boxAppHomePage.getByWithKey("Profile"));
 		log();
 		Thread.sleep(1000);
-		responseFromPage=pageTemplate.clickButton("LogOut",boxAppHomePage.getByWithKey("LogOut"));
+		responseFromPage=boxAppHomePage.clickButton("LogOut",boxAppHomePage.getByWithKey("LogOut"));
 		log();
 		Thread.sleep(1000);
 		}
 	@Parameters({"emailAddress","password"})
 	@Test(priority = 5)
 	public void loginDelete(String emailAddress, String password)throws Throwable {		
-		responseFromPage=pageTemplate.verifyTitle("Box | Login");
+		responseFromPage=boxAppLoginPage.verifyTitle("Box | Login");
 		log();
-		responseFromPage=pageTemplate.enterDetails(emailAddress,"Email Id",boxAppLoginPage.getByWithKey("Email Id"));
+		responseFromPage=boxAppLoginPage.enterDetails(emailAddress,"Email Id",boxAppLoginPage.getByWithKey("Email Id"));
 		log();
-		responseFromPage=pageTemplate.clickButton("Next",boxAppLoginPage.getByWithKey("Next"));
+		responseFromPage=boxAppLoginPage.clickButton("Next",boxAppLoginPage.getByWithKey("Next"));
 		log();
-		responseFromPage=pageTemplate.enterDetails(password,"Password",boxAppLoginPage.getByWithKey("Password"));
+		responseFromPage=boxAppLoginPage.enterDetails(password,"Password",boxAppLoginPage.getByWithKey("Password"));
 		log();
-		responseFromPage=pageTemplate.clickButton("Login",boxAppLoginPage.getByWithKey("Login"));
+		responseFromPage=boxAppLoginPage.clickButton("Login",boxAppLoginPage.getByWithKey("Login"));
 		log();
 		}
 	@Test(priority = 6)
@@ -107,19 +106,19 @@ public class BoxAppCreateDeleteFolder extends Print {
 		Thread.sleep(1000);
 		responseFromPage=boxAppHomePage.selectFolder();
 		log();
-		responseFromPage=pageTemplate.clickButton("Trash",boxAppHomePage.getByWithKey("Trash"));
+		responseFromPage=boxAppHomePage.clickButton("Trash",boxAppHomePage.getByWithKey("Trash"));
 		log();
-		responseFromPage=pageTemplate.clickButton("Ok",boxAppHomePage.getByWithKey("Ok"));
+		responseFromPage=boxAppHomePage.clickButton("Ok",boxAppHomePage.getByWithKey("Ok"));
 		log();
 		responseFromPage=boxAppHomePage.isInvisible("Delete message");
 		log();	
 		}
 	@Test(priority = 7)
 	public void logOutDelete()throws Throwable {
-		responseFromPage=pageTemplate.clickButton("Profile",boxAppHomePage.getByWithKey("Profile"));
+		responseFromPage=boxAppHomePage.clickButton("Profile",boxAppHomePage.getByWithKey("Profile"));
 		log();
 		Thread.sleep(1000);
-		responseFromPage=pageTemplate.clickButton("LogOut",boxAppHomePage.getByWithKey("LogOut"));
+		responseFromPage=boxAppHomePage.clickButton("LogOut",boxAppHomePage.getByWithKey("LogOut"));
 		log();
 		Thread.sleep(1000);
 		}

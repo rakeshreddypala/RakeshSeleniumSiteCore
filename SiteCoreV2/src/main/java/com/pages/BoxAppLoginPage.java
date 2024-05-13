@@ -5,9 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.controls.SeleniumControls;
-
-public class BoxAppLoginPage extends SeleniumControls {
+public class BoxAppLoginPage extends PageTemplate {
 	 WebDriver driver;
 	 WebDriverWait  wait;
 	 String fixedXpathExample="//div[@id='content']//a[text()='";

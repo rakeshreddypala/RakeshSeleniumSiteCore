@@ -4,10 +4,11 @@ import static com.webDriver.GlobalDriver.getGlobalDriver;
 import static com.webDriver.GlobalDriver.selectBrowser;
 import static org.testng.Assert.assertTrue;
 
+import java.util.HashMap;
+
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
@@ -22,110 +23,105 @@ import com.utils.ResponseFromPage;
 
 public class UnicornSignUpD extends Print  {
 
-	public WebDriver[] drivers;
-	public WebDriver driver;
-	 ResponseFromPage[] responseFromPage;
-	 UnicornHomePage[] unicornHomePage;
-	 UnicornSignupAgencyPage[] signupAgencyPage;
-	 UnicornSignupSelfPage[] signupSelfPage;
-	 PageTemplate[] pageTemplate;
-	 public String[] logs;
-	 public String log="";
-
-	 	
+	HashMap<Integer,ResponseFromPage> responseFromPage;
+	HashMap<Integer,UnicornHomePage> unicornHomePage;
+	HashMap<Integer,UnicornSignupAgencyPage> signupAgencyPage;
+	HashMap<Integer,UnicornSignupSelfPage> signupSelfPage;
+	HashMap<Integer,PageTemplate> pageTemplate;
+	public HashMap<Integer,String> logs;
+	public HashMap<Integer,WebDriver> drivers;
+	public String browser;
+	public String parallelMode;
+	public String xmlTestName;
+	
 	@BeforeClass
 	@Parameters("browser")
 	public void boxAppLoginPageSteps(String browser, ITestContext context) {
 		int threadCount = context.getSuite().getXmlSuite().getDataProviderThreadCount();
 		System.out.println("threadcount is "+threadCount);
-		responseFromPage = new ResponseFromPage[threadCount];
-		unicornHomePage = new UnicornHomePage[threadCount];
-		signupAgencyPage = new UnicornSignupAgencyPage[threadCount];
-		signupSelfPage = new UnicornSignupSelfPage[threadCount];
-		pageTemplate = new PageTemplate[threadCount];
-		drivers = new WebDriver[threadCount];
-		logs = new String[threadCount];
-		for(int i=0;i<threadCount;i++) {
-			selectBrowser(browser,context.getSuite().getXmlSuite().getParallel().toString(),context.getName());
-			drivers[i] = getGlobalDriver().getDriver();
-		}
-	}
-
-	@BeforeMethod
-	public void refreshLog() {
-		log="";	
+		drivers = new HashMap<>();
+		responseFromPage = new HashMap<>();
+		unicornHomePage = new HashMap<>();
+		signupAgencyPage = new HashMap<>();
+		signupSelfPage = new HashMap<>();
+		pageTemplate = new HashMap<>();
+		logs = new HashMap<>();
+		this.browser = browser;
+		parallelMode = context.getSuite().getXmlSuite().getParallel().toString();
+		xmlTestName = context.getName();
 	}
 	@Test(priority = 1,dataProvider="unicornSignupD", dataProviderClass = DataAccess.class)
 	public void signUp(String thread,String browser,String agencyName,String agencyAddress,String city,String state,String zipCode,
 			String businessType,String dealsType,String businessLocation,String dealingStates,
 			String noOfEmployes,String firstName,String lastName,String emailAddress )throws Throwable {
-		int t = Integer.parseInt(thread)-1;
-		driver = drivers[t];
-		super.driver = drivers[t];
-		pageTemplate[t] = new PageTemplate(drivers[t]);
-		unicornHomePage[t] = new UnicornHomePage(drivers[t]);
-		signupAgencyPage[t] = new UnicornSignupAgencyPage(drivers[t]);
-		signupSelfPage[t] = new UnicornSignupSelfPage(drivers[t]);
-		responseFromPage[t]=pageTemplate[t].navigateToApps(Constants.UNICORN_APP_URL);
+		Integer t = Integer.parseInt(thread)-1;
+		selectBrowser(this.browser,parallelMode,xmlTestName);
+		drivers.put(t,getGlobalDriver().getDriver());
+		super.driver = drivers.get(t);
+		pageTemplate.put(t, new PageTemplate(drivers.get(t)));	
+		unicornHomePage.put(t, new UnicornHomePage(drivers.get(t)));		
+		signupAgencyPage.put(t, new UnicornSignupAgencyPage(drivers.get(t)));	
+		signupSelfPage.put(t, new UnicornSignupSelfPage(drivers.get(t)));
+		responseFromPage.put(t, unicornHomePage.get(t).navigateToApps(Constants.UNICORN_APP_URL));
 		log(t);
-		responseFromPage[t]=pageTemplate[t].verifyTitle("UNICORN");
+		responseFromPage.put(t,unicornHomePage.get(t).verifyTitle("UNICORN"));
 		log(t);
-		responseFromPage[t]=pageTemplate[t].clickButton("Signup",unicornHomePage[t].getByWithKey("Signup"));
+		responseFromPage.put(t, unicornHomePage.get(t).clickButton("Signup",unicornHomePage.get(t).getByWithKey("Signup")));
 		log(t);
-		responseFromPage[t]=pageTemplate[t].verifyTitle("UNICORN");
+		responseFromPage.put(t,unicornHomePage.get(t).verifyTitle("UNICORN"));
 		log(t);
-		responseFromPage[t]=pageTemplate[t].enterDetails(agencyName,"Agency Name",signupAgencyPage[t].getByWithKey("Agency Name"));
+		responseFromPage.put(t, signupAgencyPage.get(t).enterDetails(agencyName,"Agency Name",signupAgencyPage.get(t).getByWithKey("Agency Name")));
 		log(t);
-		responseFromPage[t]=pageTemplate[t].enterDetails(agencyAddress,"Agency Address",signupAgencyPage[t].getByWithKey("Agency Address"));
+		responseFromPage.put(t,signupAgencyPage.get(t).enterDetails(agencyAddress,"Agency Address",signupAgencyPage.get(t).getByWithKey("Agency Address")));
 		log(t);
-		responseFromPage[t]=pageTemplate[t].enterDetails(city,"City",signupAgencyPage[t].getByWithKey("City"));
+		responseFromPage.put(t,signupAgencyPage.get(t).enterDetails(city,"City",signupAgencyPage.get(t).getByWithKey("City")));
 		log(t);
-		responseFromPage[t]=pageTemplate[t].clickButton("State",signupAgencyPage[t].getByWithKey("State"));
+		responseFromPage.put(t,signupAgencyPage.get(t).clickButton("State",signupAgencyPage.get(t).getByWithKey("State")));
 		log(t);
-		responseFromPage[t]=pageTemplate[t].select(state,signupAgencyPage[t].getByWithKey(state,"Range"));
+		responseFromPage.put(t,signupAgencyPage.get(t).select(state,signupAgencyPage.get(t).getByWithKey(state,"Range")));
 		log(t);
-		responseFromPage[t]=pageTemplate[t].enterDetails(zipCode,"Zip Code",signupAgencyPage[t].getByWithKey("Zip Code"));
+		responseFromPage.put(t,signupAgencyPage.get(t).enterDetails(zipCode,"Zip Code",signupAgencyPage.get(t).getByWithKey("Zip Code")));
 		log(t);
-		responseFromPage[t]=pageTemplate[t].clickButton("Business Type",signupAgencyPage[t].getByWithKey("Business Type"));
+		responseFromPage.put(t,signupAgencyPage.get(t).clickButton("Business Type",signupAgencyPage.get(t).getByWithKey("Business Type")));
 		log(t);
-		responseFromPage[t]=pageTemplate[t].select(businessType,signupAgencyPage[t].getByWithKey(businessType,"Text"));
+		responseFromPage.put(t,signupAgencyPage.get(t).select(businessType,signupAgencyPage.get(t).getByWithKey(businessType,"Text")));
 		log(t);
-		responseFromPage[t]=pageTemplate[t].clickButton("Deals Type",signupAgencyPage[t].getByWithKey("Deals Type"));
+		responseFromPage.put(t,signupAgencyPage.get(t).clickButton("Deals Type",signupAgencyPage.get(t).getByWithKey("Deals Type")));
 		log(t);
-		responseFromPage[t]=pageTemplate[t].select(dealsType,signupAgencyPage[t].getByWithKey(dealsType,"Text"));
+		responseFromPage.put(t,signupAgencyPage.get(t).select(dealsType,signupAgencyPage.get(t).getByWithKey(dealsType,"Text")));
 		log(t);
-		responseFromPage[t]=pageTemplate[t].clickButton("Business Location",signupAgencyPage[t].getByWithKey("Business Location"));
+		responseFromPage.put(t,signupAgencyPage.get(t).clickButton("Business Location",signupAgencyPage.get(t).getByWithKey("Business Location")));
 		log(t);
-		responseFromPage[t]=pageTemplate[t].select(businessLocation,signupAgencyPage[t].getByWithKey(businessLocation,"Text"));
+		responseFromPage.put(t,signupAgencyPage.get(t).select(businessLocation,signupAgencyPage.get(t).getByWithKey(businessLocation,"Text")));
 		log(t);
-		responseFromPage[t]=pageTemplate[t].clickButton("Dealing States",signupAgencyPage[t].getByWithKey("Dealing States"));
+		responseFromPage.put(t,signupAgencyPage.get(t).clickButton("Dealing States",signupAgencyPage.get(t).getByWithKey("Dealing States")));
 		log(t);
-		responseFromPage[t]=pageTemplate[t].select(dealingStates,signupAgencyPage[t].getByWithKey(dealingStates,"Text"));
+		responseFromPage.put(t,signupAgencyPage.get(t).select(dealingStates,signupAgencyPage.get(t).getByWithKey(dealingStates,"Text")));
 		log(t);
-		responseFromPage[t]=pageTemplate[t].clickButton("Number Of Employes",signupAgencyPage[t].getByWithKey("Number Of Employes"));
+		responseFromPage.put(t,signupAgencyPage.get(t).clickButton("Number Of Employes",signupAgencyPage.get(t).getByWithKey("Number Of Employes")));
 		log(t);
-		responseFromPage[t]=pageTemplate[t].select(noOfEmployes,signupAgencyPage[t].getByWithKey(noOfEmployes,"Range"));
+		responseFromPage.put(t,signupAgencyPage.get(t).select(noOfEmployes,signupAgencyPage.get(t).getByWithKey(noOfEmployes,"Range")));
 		log(t);
-		responseFromPage[t]=pageTemplate[t].clickButton("Next",signupAgencyPage[t].getByWithKey("Next"));
+		responseFromPage.put(t,signupAgencyPage.get(t).clickButton("Next",signupAgencyPage.get(t).getByWithKey("Next")));
 		log(t);
-		responseFromPage[t]=pageTemplate[t].verifyTitle("UNICORN");
+		responseFromPage.put(t,signupSelfPage.get(t).verifyTitle("UNICORN"));
 		log(t);
-		responseFromPage[t]=pageTemplate[t].enterDetails(firstName,"First Name",signupSelfPage[t].getByWithKey("First Name"));
+		responseFromPage.put(t,signupSelfPage.get(t).enterDetails(firstName,"First Name",signupSelfPage.get(t).getByWithKey("First Name")));
 		log(t);
-		responseFromPage[t]=pageTemplate[t].enterDetails(lastName,"Last Name",signupSelfPage[t].getByWithKey("Last Name"));
+		responseFromPage.put(t,signupSelfPage.get(t).enterDetails(lastName,"Last Name",signupSelfPage.get(t).getByWithKey("Last Name")));
 		log(t);
-		responseFromPage[t]=pageTemplate[t].enterDetails(emailAddress,"Email Id",signupSelfPage[t].getByWithKey("Email Id"));
+		responseFromPage.put(t,signupSelfPage.get(t).enterDetails(emailAddress,"Email Id",signupSelfPage.get(t).getByWithKey("Email Id")));
 		log(t);
-		responseFromPage[t]=pageTemplate[t].clickButton("Submit",signupSelfPage[t].getByWithKey("Submit"));
+		responseFromPage.put(t,signupSelfPage.get(t).clickButton("Submit",signupSelfPage.get(t).getByWithKey("Submit")));
 		log(t);
-		responseFromPage[t]=pageTemplate[t].clickButton("Congrats",signupSelfPage[t].getByWithKey("Congrats"));
+		responseFromPage.put(t,signupSelfPage.get(t).clickButton("Congrats",signupSelfPage.get(t).getByWithKey("Congrats")));
 		log(t);
-		responseFromPage[t]=pageTemplate[t].verifyTitle("UNICORN");
+		responseFromPage.put(t,unicornHomePage.get(t).verifyTitle("UNICORN"));
 		log(t);
 		Thread.sleep(1000);
 		}
 	public void log(int t) {
-		assertTrue(responseFromPage[t].isTrue(),responseFromPage[t].getMessage());
-		logs[t] = logExtent(logs[t],responseFromPage[t].getMessage());
+		assertTrue(responseFromPage.get(t).isTrue(),responseFromPage.get(t).getMessage());
+		logs.put(t, logExtent(logs.get(t),responseFromPage.get(t).getMessage()));
 	}
 }

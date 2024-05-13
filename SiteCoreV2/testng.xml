@@ -9,20 +9,20 @@
   <parameter name="emailAddress" value="palarakeshreddy@gmail.com"></parameter>
   <parameter name="password" value="testing123"></parameter>
     <classes>
-      <!--<class name="com.tests.BoxAppLoginLogOut"/>
+      <class name="com.tests.BoxAppLoginLogOut"/>
       <class name="com.tests.BoxAppCreateDeleteFolder"/>
-      <class name="com.tests.BoxAppDevelopers"/>-->
+      <class name="com.tests.BoxAppDevelopers"/>
       <class name="com.tests.UnicornSignUp"/>
     </classes>
   </test>
     <test parallel ="false" name="Edge">
-  <parameter name="browser" value="edge"></parameter>
+  <parameter name="browser" value="chrome"></parameter>
   <parameter name="emailAddress" value="palarakeshreddy@gmail.com"></parameter>
   <parameter name="password" value="testing123"></parameter>
     <classes>
-      <!--<class name="com.tests.BoxAppLoginLogOut"/>
+      <class name="com.tests.BoxAppLoginLogOut"/>
       <class name="com.tests.BoxAppCreateDeleteFolder"/>
-      <class name="com.tests.BoxAppDevelopers"/>--> 
+      <class name="com.tests.BoxAppDevelopers"/> 
       <class name="com.tests.UnicornSignUp"/>   
     </classes>
   </test> 

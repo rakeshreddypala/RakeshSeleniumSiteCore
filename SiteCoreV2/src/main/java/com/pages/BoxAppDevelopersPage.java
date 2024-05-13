@@ -6,10 +6,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.controls.SeleniumControls;
 import com.utils.ResponseFromPage;
 
-public class BoxAppDevelopersPage extends SeleniumControls {
+public class BoxAppDevelopersPage extends PageTemplate {
 	 WebDriver driver;
 	 WebDriverWait  wait;	 
 	 By byApp = By.xpath("//div[@class='NameCell-title']");

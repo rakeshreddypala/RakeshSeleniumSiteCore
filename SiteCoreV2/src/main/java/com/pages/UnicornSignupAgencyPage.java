@@ -4,9 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
-import com.controls.SeleniumControls;
-
-public class UnicornSignupAgencyPage extends SeleniumControls {
+public class UnicornSignupAgencyPage extends PageTemplate {
 	 WebDriver driver;
 	 String xpathPrefixRange="//span[text()='";
 	 String xpathSuffixRange="']";
